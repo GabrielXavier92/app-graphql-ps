@@ -23,7 +23,7 @@ const List: React.FC = () => {
 		return (
 			<div>
 				<button onClick={() => refetch()}>Refetch</button>
-				<p>Error :(</p>
+				<p>Error aaa:(</p>
 			</div>
 		);
 
@@ -33,7 +33,7 @@ const List: React.FC = () => {
 			{data.fetchDoctors.map((doc: any) => {
 				return (
 					<div key={doc}>
-						<span>id: {doc.id}</span>
+						<span>idaa: {doc.id}</span>
 						<span>name: {doc.name}</span>
 						{doc.services.map((service: any) => {
 							return (
