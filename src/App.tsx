@@ -1,17 +1,26 @@
 import React from "react";
-import { ApolloProvider } from "@apollo/react-hooks";
+import { BrowserRouter as Router } from "react-router-dom";
 
+import { ApolloProvider } from "@apollo/react-hooks";
 import { client } from "./config/apolloServer";
 
-import List from "./components/list";
-import Login from "./components/login";
+import Routes from './routes'
+import { Container } from "@material-ui/core";
+
+import CssBaseline from '@material-ui/core/CssBaseline';
+
+
 
 const App: React.FC = () => {
 	return (
+
 		<ApolloProvider client={client}>
-			<div>Hello world!</div>
-			<Login></Login>
-			<List></List>
+			<Container component="main" maxWidth="xs">
+				<CssBaseline />
+				<Router>
+					<Routes />
+				</Router>
+			</Container>
 		</ApolloProvider>
 	);
 };

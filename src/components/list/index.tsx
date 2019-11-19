@@ -1,6 +1,7 @@
 import React from "react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
 export const FETCH_DOCTORS = gql`
 	{
@@ -15,8 +16,13 @@ export const FETCH_DOCTORS = gql`
 	}
 `;
 
-const List: React.FC = () => {
+const List: React.FC<RouteComponentProps> = ({ history }) => {
 	const { loading, error, data, refetch } = useQuery(FETCH_DOCTORS);
+
+	const logout = async () => {
+		await localStorage.clear()
+		history.replace('/')
+	}
 
 	if (loading) return <p>Loading...</p>;
 	if (error)
@@ -29,6 +35,7 @@ const List: React.FC = () => {
 
 	return (
 		<div>
+			<button onClick={() => logout()}>Logout</button>
 			<button onClick={() => refetch()}>Refetch</button>
 			{data.fetchDoctors.map((doc: any) => {
 				return (
@@ -46,8 +53,9 @@ const List: React.FC = () => {
 					</div>
 				);
 			})}
+			{data.fetchDoctors.length === 0 && <div>Nenhum registro</div>}
 		</div>
 	);
 };
 
-export default List;
+export default withRouter(List);
