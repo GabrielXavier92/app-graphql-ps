@@ -1,14 +1,16 @@
 import React from "react";
-import { Switch, Route, RouteComponentProps } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import GuardRoute from './GuardRoute'
-import Login from "../components/auth";
+import Login from "../components/auth/login";
+import ForgotPassword from "../components/auth/forgotPassword";
 import List from "../components/list";
 
 
 const Routes = () => {
   const routes = [
     { path: "/", component: Login },
+    { path: "/forgot-password", component: ForgotPassword },
     {
       path: "/list",
       component: List,

@@ -7,3 +7,9 @@ export const LOGIN = gql`
 		}
 	}
 `;
+
+export const FORGOT = gql`
+	mutation FORGOT($email: String!){
+	  forgotPassword(email: $email)
+	}
+`

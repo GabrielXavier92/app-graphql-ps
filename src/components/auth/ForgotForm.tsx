@@ -5,7 +5,10 @@ import { withRouter, RouteComponentProps } from "react-router-dom"
 import { useMutation } from "@apollo/react-hooks"
 import { useStyles } from './styles'
 
-import { LOGIN } from './mutations'
+import { FORGOT } from './mutations'
+
+import SnackbarUtils from '../../utils/snack'
+
 
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -16,41 +19,32 @@ import Loading from '../loading'
 
 type LoginForm = {
   email: string;
-  password: string;
 };
 
-const LoginForm: React.FC<RouteComponentProps> = ({ history }) => {
+const ForgotForm: React.FC<RouteComponentProps> = ({ history }) => {
   const classes = useStyles()
 
   const { register, handleSubmit, errors } = useForm<LoginForm>()
 
-  const [login, { loading }] = useMutation(LOGIN, {
-    onCompleted: async ({ login }) => {
-      await localStorage.setItem("token", login!.token);
-      history.replace('/list')
-    }
+  const [forgot, { loading }] = useMutation(FORGOT, {
+    onCompleted: async ({ forgotPassword }) => {
+      if (forgotPassword) {
+        SnackbarUtils.success('Senha resetada com sucesso, verifique seu email')
+        history.replace('/')
+      }
+    },
   });
 
   const handleLogin = (data: LoginForm) => {
-    const { email, password } = data
-    login({
+    const { email } = data
+    forgot({
       variables: {
-        email,
-        password
+        email
       }
     });
-
   };
 
   const helperText = () => {
-    if (errors.password &&
-      errors.password!.type === "required") {
-      return "Campo obrigatorio"
-    }
-    else if (errors.password &&
-      errors.password!.type === "minLength") {
-      return "Minimo 5 caracters"
-    }
     if (errors.email &&
       errors.email!.type === "required") {
       return "Campo obrigatorio"
@@ -77,19 +71,6 @@ const LoginForm: React.FC<RouteComponentProps> = ({ history }) => {
         helperText={helperText()}
         autoFocus
       />
-      <TextField
-        name="password"
-        inputRef={register({ required: true, minLength: 1 })}
-        variant="outlined"
-        margin="normal"
-        fullWidth
-        label="Senha"
-        type="password"
-        id="password"
-        autoComplete="current-password"
-        error={"password" in errors}
-        helperText={helperText()}
-      />
       <Grid className={classes.submit}>
         <Button
           type="submit"
@@ -97,23 +78,18 @@ const LoginForm: React.FC<RouteComponentProps> = ({ history }) => {
           variant="contained"
           color="primary"
         >
-          Entrar
+          Recuperar minha senha
       </Button>
       </Grid>
       <Grid container className={classes.actions}>
         <Grid item xs>
-          <Link href="/forgot-password" variant="body2">
-            Esqueci minha senha
+          <Link href="/" variant="body2">
+            Voltar
           </Link>
-        </Grid>
-        <Grid item>
-          <Link href="#" variant="body2">
-            Crie sua conta
-					</Link>
         </Grid>
       </Grid>
     </form>
   )
 }
 
-export default withRouter(LoginForm)
+export default withRouter(ForgotForm)
