@@ -27,7 +27,7 @@ const LoginForm: React.FC<RouteComponentProps> = ({ history }) => {
   const [login, { loading }] = useMutation(LOGIN, {
     onCompleted: async ({ login }) => {
       await localStorage.setItem("token", login!.token);
-      history.replace('/list')
+      history.replace('/dashboard/list')
     }
   });
 

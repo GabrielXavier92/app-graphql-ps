@@ -8,8 +8,6 @@ import Routes from './routes'
 
 import { SnackbarProvider } from 'notistack';
 import { SnackbarUtilsConfigurator } from './utils/snack';
-import { Container } from "@material-ui/core";
-
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 const App: React.FC = () => {
@@ -18,12 +16,10 @@ const App: React.FC = () => {
 		<ApolloProvider client={client}>
 			<SnackbarProvider maxSnack={8} autoHideDuration={2000} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
 				<SnackbarUtilsConfigurator />
-				<Container component="main" maxWidth="xs">
-					<CssBaseline />
-					<Router>
-						<Routes />
-					</Router>
-				</Container>
+				<CssBaseline />
+				<Router>
+					<Routes />
+				</Router>
 			</SnackbarProvider>
 		</ApolloProvider>
 	);

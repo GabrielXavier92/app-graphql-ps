@@ -4,7 +4,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
-import ForgotForm from './ForgotForm'
+import ForgotForm from './forgotForm'
 
 import { useStyles } from './styles'
 

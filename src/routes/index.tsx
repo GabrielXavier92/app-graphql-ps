@@ -1,32 +1,32 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 import GuardRoute from './GuardRoute'
 import Login from "../components/auth/login";
 import ForgotPassword from "../components/auth/forgotPassword";
-import List from "../components/list";
-
+import Dashboard from "../components/dashboard";
+import List from "../components/doctor/doctorList";
+import teste from "../components/teste";
 
 const Routes = () => {
-  const routes = [
-    { path: "/", component: Login },
-    { path: "/forgot-password", component: ForgotPassword },
-    {
-      path: "/list",
-      component: List,
-      auth: true
-    }
-  ];
   return (
     <Switch>
-      {routes.map(route => {
-        if (route.auth)
-          return <GuardRoute key={route.path} path={route.path} component={route.component} />;
-        else
-          return <Route exact key={route.path} path={route.path} component={route.component} />
-      })}
+      <Route exact path="/login" component={Login} />
+      <Route exact path="/forgot-password" component={ForgotPassword} />
+      <GuardRoute exact={false} path="/dashboard" component={Dashboard} />;
+      <Redirect to="/login" />
     </Switch>
   );
 };
 
-export default Routes;
+export const DashboardRoutes = () => {
+  return (
+    <>
+      <GuardRoute exact={true} path="/dashboard/list" component={List} />
+      <GuardRoute exact={true} path="/dashboard/teste" component={teste} />
+    </>
+  )
+}
+
+export default Routes
+
