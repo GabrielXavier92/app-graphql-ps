@@ -1,6 +1,6 @@
 import React from 'react'
 import useForm from 'react-hook-form'
-import { withRouter, RouteComponentProps } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 
 import { useMutation } from "@apollo/react-hooks"
 import { useStyles } from './styles'
@@ -19,8 +19,10 @@ type LoginForm = {
   password: string;
 };
 
-const LoginForm: React.FC<RouteComponentProps> = ({ history }) => {
+const LoginForm: React.FC = () => {
   const classes = useStyles()
+
+  const history = useHistory()
 
   const { register, handleSubmit, errors } = useForm<LoginForm>()
 
@@ -116,4 +118,4 @@ const LoginForm: React.FC<RouteComponentProps> = ({ history }) => {
   )
 }
 
-export default withRouter(LoginForm)
+export default LoginForm

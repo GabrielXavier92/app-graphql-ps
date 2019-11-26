@@ -7,6 +7,8 @@ import { onError } from 'apollo-link-error';
 
 import SnackbarUtils from '../utils/snack';
 
+import history from '../utils/history';
+
 const httpLink = createHttpLink({
 	uri: "http://localhost:4000/"
 });
@@ -22,17 +24,22 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-	graphQLErrors!.map((error: any) => {
-		if (error.code === "BAD_USER_INPUT") {
-			error.errors.map((er: any) => {
-				SnackbarUtils.error(er.message)
-			})
-		} else if (error.code === "NAO AUTORIZADO CORRIGIR") {
 
-		} else {
-			SnackbarUtils.error(error.message)
+	if (graphQLErrors) {
+		for (let err of graphQLErrors) {
+			console.log(err)
+			if (err.extensions!.code === 'UNAUTHENTICATED') {
+				SnackbarUtils.error(err.message)
+				localStorage.clear()
+				history.replace('/login')
+			} else if (err.extensions!.code === 'BAD_USER_INPUT') {
+				err.extensions!.errors.map((er: any) => {
+					SnackbarUtils.error(er.message)
+					return er
+				})
+			}
 		}
-	})
+	}
 	networkError && console.log(networkError)
 })
 

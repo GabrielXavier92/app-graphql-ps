@@ -8,14 +8,18 @@ import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 
 import { useStyles } from './styles'
-import { sideBarList } from './sideBarList';
+import Item from './Item';
+import { useHistory } from "react-router-dom";
 
 interface ISideBar {
   open: boolean;
   handleDrawerClose: any;
+  routes: Array<any>
 }
 
-const SideBar: React.FC<ISideBar> = ({ open, handleDrawerClose }) => {
+
+const SideBar: React.FC<ISideBar> = ({ open, handleDrawerClose, routes }) => {
+  const history = useHistory()
   const classes = useStyles();
 
   return (
@@ -33,7 +37,11 @@ const SideBar: React.FC<ISideBar> = ({ open, handleDrawerClose }) => {
       </div>
       <Divider />
       <List>
-        {sideBarList}
+        <div>
+          {routes.map(({ key, name, path }) =>
+            (<Item key={key} name={name} selected={path === history.location.pathname} path={path}></Item>)
+          )}
+        </div>
       </List>
       <Divider />
     </Drawer>

@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router } from "react-router-dom";
 import clsx from 'clsx';
 
-import Header from '../header';
-import SideBar from '../sidebar';
-
-import { DashboardRoutes } from '../../routes/index';
+import { DashboardRoutes, routes } from '../../routes';
 
 import { useStyles } from './styles'
 import { Container } from "@material-ui/core";
+
+import Header from '../header';
+import SideBar from '../sidebar';
 
 const Dashboard: React.FC = () => {
   const [open, setOpen] = useState(true);
@@ -21,8 +20,8 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className={classes.root}>
-      <Header open={open} handleDrawerOpen={handleDrawer} />
-      <SideBar open={open} handleDrawerClose={handleDrawer} />
+      <Header open={open} handleDrawerOpen={handleDrawer} routes={routes} />
+      <SideBar open={open} handleDrawerClose={handleDrawer} routes={routes} />
       <main className={classes.content}>
         <div className={clsx(classes.appBarSpacer, classes.fixedHeight)}>
           <Container maxWidth="lg" className={classes.container}>

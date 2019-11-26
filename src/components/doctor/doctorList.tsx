@@ -1,23 +1,27 @@
-import React from "react";
+import * as React from "react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Grid } from "@material-ui/core";
+
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+import DataTable from '../dataTable';
 
 export const FETCH_DOCTORS = gql`
 	{
 		fetchDoctors {
 			id
 			name
-			services {
-				id
-				name
-			}
+			cro
+			status
 		}
 	}
 `;
 
-const DoctorList: React.FC<RouteComponentProps> = ({ history }) => {
+const DoctorList: React.FC = () => {
+	const history = useHistory()
+
 	const { loading, error, data, refetch } = useQuery(FETCH_DOCTORS);
 
 	const logout = async () => {
@@ -37,32 +41,40 @@ const DoctorList: React.FC<RouteComponentProps> = ({ history }) => {
 	const changePage = () => {
 		history.replace('/dashboard/teste')
 	}
+
+	const onRowClick = (data: any) => {
+		console.log(data)
+	}
+
+	const columns = [
+		{
+			name: "id", options: {
+				display: 'false'
+			}
+		},
+		"Nome",
+		"CRO",
+		{
+			name: "Status", options: {
+				customBodyRender: (value: any) => (
+					<>
+						<span>{value && 'Ativo'}</span>
+						<span>{!value && 'Inativo'}</span>
+					</>
+				),
+			}
+		}
+	];
+
 	return (
-		<Grid xs={12} md={8} lg={9}>
-			<div>
-				<button onClick={() => logout()}>Logout</button>
-				<button onClick={() => refetch()}>Refetch</button>
-				<button onClick={() => changePage()}>TESTE</button>
-				{data.fetchDoctors.map((doc: any) => {
-					return (
-						<div key={doc}>
-							<span>idaa: {doc.id}</span>
-							<span>name: {doc.name}</span>
-							{doc.services.map((service: any) => {
-								return (
-									<div key={service.id}>
-										<span>service name: {service.id}</span>
-										<span>service name: {service.name}</span>
-									</div>
-								);
-							})}
-						</div>
-					);
-				})}
-				{data.fetchDoctors.length === 0 && <div>Nenhum registroo</div>}
-			</div>
+		<Grid xs={12} md={8} lg={9} item={true}>
+			<button onClick={() => logout()}>Logout</button>
+			<button onClick={() => refetch()}>Refetch</button>
+			<button onClick={() => changePage()}>TESTE</button>
+			<DataTable columns={columns} items={data.fetchDoctors} onRowClick={onRowClick} />
+
 		</Grid>
 	);
 };
 
-export default withRouter(DoctorList);
+export default DoctorList

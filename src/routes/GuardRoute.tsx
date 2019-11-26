@@ -1,12 +1,13 @@
 import React from "react";
-import { withRouter, RouteComponentProps, Route } from "react-router-dom";
+import { useHistory, Route } from "react-router-dom";
 
-interface IGuardeRoute extends RouteComponentProps {
+interface IGuardeRoute {
   component: any;
   path: string;
   exact: boolean;
 }
-const GaurdRoute: React.FC<IGuardeRoute> = ({ component, path, exact, history }) => {
+const GaurdRoute: React.FC<IGuardeRoute> = ({ component, path, exact }) => {
+  const history = useHistory()
   // Adicionar rotina de autenticacao nesse ponto
   if (!localStorage.getItem("token")) {
     history.replace("/");
@@ -17,4 +18,4 @@ const GaurdRoute: React.FC<IGuardeRoute> = ({ component, path, exact, history })
   }
 };
 
-export default withRouter(GaurdRoute);
+export default GaurdRoute

@@ -1,4 +1,4 @@
-import React, { SetStateAction, Dispatch } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -11,12 +11,24 @@ import Typography from '@material-ui/core/Typography';
 
 import { useStyles } from './styles'
 
+import { useHistory } from "react-router-dom";
+import { routes } from "../../routes";
 interface IHeader {
   open: boolean;
   handleDrawerOpen: any;
+  routes: Array<any>
 }
 const Header: React.FC<IHeader> = ({ open, handleDrawerOpen }) => {
   const classes = useStyles();
+  const history = useHistory()
+  const [title, setTitle] = useState('Dashboard')
+
+  useEffect(() => {
+    const newTitle = routes.find(route => (
+      route.path === history.location.pathname
+    ))
+    setTitle(newTitle!.name)
+  }, [history.location.pathname])
 
   return (
     <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
@@ -31,15 +43,16 @@ const Header: React.FC<IHeader> = ({ open, handleDrawerOpen }) => {
           <MenuIcon />
         </IconButton>
         <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-          Dashboard
-          </Typography>
+          {title}
+        </Typography>
         <IconButton color="inherit">
           <Badge badgeContent={4} color="secondary">
             <NotificationsIcon />
           </Badge>
         </IconButton>
       </Toolbar>
-    </AppBar>)
+    </AppBar>
+  )
 }
 
 export default Header

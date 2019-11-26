@@ -19,11 +19,17 @@ const Routes = () => {
   );
 };
 
+export const routes = [
+  { key: 1, name: "Profissionais", path: '/dashboard/list', component: List },
+  { key: 2, name: "Teste", path: '/dashboard/teste', component: teste }
+]
+
 export const DashboardRoutes = () => {
   return (
     <>
-      <GuardRoute exact={true} path="/dashboard/list" component={List} />
-      <GuardRoute exact={true} path="/dashboard/teste" component={teste} />
+      {routes.map(({ key, path, component }) =>
+        (<GuardRoute key={key} exact={true} path={path} component={component} />)
+      )}
     </>
   )
 }
