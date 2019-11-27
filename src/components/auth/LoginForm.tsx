@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom"
 import { useMutation } from "@apollo/react-hooks"
 import { useStyles } from './styles'
 
-import { LOGIN } from './mutations'
+import { LOGIN } from './graphql'
 
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -14,17 +14,14 @@ import Link from '@material-ui/core/Link'
 
 import Loading from '../loading'
 
-type LoginForm = {
-  email: string;
-  password: string;
-};
+import { MutationLoginArgs } from '../../generated/graphql';
 
 const LoginForm: React.FC = () => {
   const classes = useStyles()
 
   const history = useHistory()
 
-  const { register, handleSubmit, errors } = useForm<LoginForm>()
+  const { register, handleSubmit, errors } = useForm<MutationLoginArgs>()
 
   const [login, { loading }] = useMutation(LOGIN, {
     onCompleted: async ({ login }) => {
@@ -33,7 +30,7 @@ const LoginForm: React.FC = () => {
     }
   });
 
-  const handleLogin = (data: LoginForm) => {
+  const handleLogin = (data: MutationLoginArgs) => {
     const { email, password } = data
     login({
       variables: {

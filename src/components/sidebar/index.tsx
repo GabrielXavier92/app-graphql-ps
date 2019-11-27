@@ -38,8 +38,8 @@ const SideBar: React.FC<ISideBar> = ({ open, handleDrawerClose, routes }) => {
       <Divider />
       <List>
         <div>
-          {routes.map(({ key, name, path }) =>
-            (<Item key={key} name={name} selected={path === history.location.pathname} path={path}></Item>)
+          {routes.map(({ key, name, path, menu }) =>
+            (menu && <Item key={key} name={name} selected={path === history.location.pathname} path={path}></Item>)
           )}
         </div>
       </List>

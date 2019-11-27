@@ -2,44 +2,26 @@ import * as React from "react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { useHistory } from "react-router-dom";
-import { Grid } from "@material-ui/core";
 
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from "@material-ui/core/Grid";
 
 import DataTable from '../dataTable';
+import { Typography } from "@material-ui/core";
 
-export const FETCH_DOCTORS = gql`
-	{
-		fetchDoctors {
-			id
-			name
-			cro
-			status
-		}
-	}
-`;
+import { FETCH_DOCTORS } from './graphql'
 
 const DoctorList: React.FC = () => {
 	const history = useHistory()
 
-	const { loading, error, data, refetch } = useQuery(FETCH_DOCTORS);
+	const { loading, data, refetch } = useQuery(FETCH_DOCTORS);
 
 	const logout = async () => {
 		await localStorage.clear()
 		history.replace('/login')
 	}
 
-	if (loading) return <p>Loading...</p>;
-	if (error)
-		return (
-			<div>
-				<button onClick={() => refetch()}>Refetch</button>
-				<p>Error aaa:(</p>
-			</div>
-		);
-
 	const changePage = () => {
-		history.replace('/dashboard/teste')
+		history.replace('/dashboard/doctor-form')
 	}
 
 	const onRowClick = (data: any) => {
@@ -49,7 +31,9 @@ const DoctorList: React.FC = () => {
 	const columns = [
 		{
 			name: "id", options: {
-				display: 'false'
+				display: false,
+				viewColumns: false,
+				filter: false
 			}
 		},
 		"Nome",
@@ -58,21 +42,28 @@ const DoctorList: React.FC = () => {
 			name: "Status", options: {
 				customBodyRender: (value: any) => (
 					<>
-						<span>{value && 'Ativo'}</span>
-						<span>{!value && 'Inativo'}</span>
+						<Typography variant="subtitle2">{value && 'Ativo'}</Typography>
+						<Typography variant="subtitle2">{!value && 'Inativo'}</Typography>
 					</>
 				),
 			}
-		}
+		},
+		"Sexo"
 	];
 
 	return (
-		<Grid xs={12} md={8} lg={9} item={true}>
+		<Grid>
 			<button onClick={() => logout()}>Logout</button>
 			<button onClick={() => refetch()}>Refetch</button>
 			<button onClick={() => changePage()}>TESTE</button>
-			<DataTable columns={columns} items={data.fetchDoctors} onRowClick={onRowClick} />
-
+			<DataTable
+				title={"Profissionais"}
+				columns={columns}
+				items={data ? data.fetchDoctors : []}
+				loading={loading}
+				onRowClick={onRowClick}
+				onAdd={changePage}
+			/>
 		</Grid>
 	);
 };

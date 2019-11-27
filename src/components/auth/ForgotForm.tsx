@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom"
 import { useMutation } from "@apollo/react-hooks"
 import { useStyles } from './styles'
 
-import { FORGOT } from './mutations'
+import { FORGOT } from './graphql'
 
 import SnackbarUtils from '../../utils/snack'
 

@@ -24,7 +24,7 @@ const Dashboard: React.FC = () => {
       <SideBar open={open} handleDrawerClose={handleDrawer} routes={routes} />
       <main className={classes.content}>
         <div className={clsx(classes.appBarSpacer, classes.fixedHeight)}>
-          <Container maxWidth="lg" className={classes.container}>
+          <Container className={classes.container}>
             <DashboardRoutes />
           </Container>
         </div>

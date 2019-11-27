@@ -1,25 +1,33 @@
 import React from 'react'
-
-
 import MUIDataTable, { MUIDataTableOptions } from "mui-datatables";
+import { useStyles } from './styles'
+
+
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
+import Grid from "@material-ui/core/Grid";
+
+import Loading from "../loading";
 
 interface IDataTable {
+  title: string;
   items: Array<any>;
   columns: Array<any>;
+  loading?: boolean;
+  onAdd?: (...args: any[]) => void;
   onRowClick?: (rowData: string[], rowMeta: { dataIndex: number; rowIndex: number }) => void;
 }
 
-const DataTable: React.FC<IDataTable> = ({ columns, items, onRowClick }) => {
-  console.log(items)
+const DataTable: React.FC<IDataTable> = ({ title, columns, items, loading, onRowClick, onAdd }) => {
+  const classes = useStyles()
 
   const data = items.map(item =>
     Object.values(item)
   )
 
-  console.log(data)
-
   const options: MUIDataTableOptions = {
-    serverSide: true,
+    // serverSide: true,
+    filterType: "dropdown",
     onRowClick: onRowClick,
     selectableRows: 'none',
     selectableRowsHeader: false,
@@ -60,12 +68,20 @@ const DataTable: React.FC<IDataTable> = ({ columns, items, onRowClick }) => {
 
 
   return (
-    <MUIDataTable
-      title={"Profissionais"}
-      data={data}
-      columns={columns}
-      options={options}
-    />
+    <div className={classes.table}>
+      {loading && <Loading />}
+      <Grid className={classes.actionButtons} justify="flex-end" container>
+        <Fab color="primary" aria-label="add" onClick={onAdd}>
+          <AddIcon />
+        </Fab>
+      </Grid>
+      <MUIDataTable
+        title={title}
+        data={data}
+        columns={columns}
+        options={options}
+      />
+    </div>
   )
 }
 

@@ -27,7 +27,9 @@ const Header: React.FC<IHeader> = ({ open, handleDrawerOpen }) => {
     const newTitle = routes.find(route => (
       route.path === history.location.pathname
     ))
-    setTitle(newTitle!.name)
+    if (newTitle && newTitle!.name) {
+      setTitle(newTitle!.name)
+    }
   }, [history.location.pathname])
 
   return (
