@@ -53,9 +53,9 @@ const DoctorList: React.FC = () => {
 
 	return (
 		<Grid>
-			<button onClick={() => logout()}>Logout</button>
+			{/* <button onClick={() => logout()}>Logout</button>
 			<button onClick={() => refetch()}>Refetch</button>
-			<button onClick={() => changePage()}>TESTE</button>
+			<button onClick={() => changePage()}>TESTE</button> */}
 			<DataTable
 				title={"Profissionais"}
 				columns={columns}

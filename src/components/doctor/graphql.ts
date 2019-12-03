@@ -22,6 +22,8 @@ export const CREATE_DOCTOR = gql`
 			gender
 			birth
 			cro
+			services
+			specialties
 		}
 	}
 `;

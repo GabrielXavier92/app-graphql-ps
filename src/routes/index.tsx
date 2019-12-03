@@ -22,8 +22,8 @@ const Routes = () => {
 
 export const routes = [
   { key: 1, name: "Conta", path: '/dashboard/doctor-list', component: DoctorList, menu: true },
-  { key: 1, name: "Novo Profissional", path: '/dashboard/doctor-form', component: DoctorForm, menu: false },
-  { key: 2, name: "Teste", path: '/dashboard/teste', component: teste, menu: true }
+  { key: 2, name: "Novo Profissional", path: '/dashboard/doctor-form', component: DoctorForm, menu: false },
+  { key: 3, name: "Teste", path: '/dashboard/teste', component: teste, menu: true }
 ]
 
 export const DashboardRoutes = () => {
@@ -32,7 +32,7 @@ export const DashboardRoutes = () => {
       {routes.map(({ key, path, component }) =>
         (<GuardRoute key={key} exact={true} path={path} component={component} />)
       )}
-      <Redirect to="/dashboard/doctor-list" />
+      <Redirect to="/dashboard/doctor-form" />
     </>
   )
 }
