@@ -1,6 +1,6 @@
 import { gql } from "apollo-boost";
 
-import { DoctorInput } from '../../generated/graphql'
+// import { DoctorInput } from '../../generated/graphql'
 
 export const FETCH_DOCTORS = gql`
 	{

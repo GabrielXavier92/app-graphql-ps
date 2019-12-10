@@ -1,5 +1,4 @@
 import * as React from "react";
-import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { useHistory } from "react-router-dom";
 
@@ -13,12 +12,12 @@ import { FETCH_DOCTORS } from './graphql'
 const DoctorList: React.FC = () => {
 	const history = useHistory()
 
-	const { loading, data, refetch } = useQuery(FETCH_DOCTORS);
+	const { loading, data } = useQuery(FETCH_DOCTORS);
 
-	const logout = async () => {
-		await localStorage.clear()
-		history.replace('/login')
-	}
+	// const logout = async () => {
+	// 	await localStorage.clear()
+	// 	history.replace('/login')
+	// }
 
 	const changePage = () => {
 		history.replace('/dashboard/doctor-form')

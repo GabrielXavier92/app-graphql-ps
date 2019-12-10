@@ -1,5 +1,6 @@
 import React from "react";
 import { InputMessage } from "..";
+import Checkbox from '@material-ui/core/Checkbox';
 
 export interface IInputCheckbox {
 	name: string;
@@ -12,34 +13,43 @@ export interface IInputCheckbox {
 	watch?: (watch: any) => void;
 }
 
-const constructClassName = (inputClassName, hasError) =>
-	`hot-custom-control__input${hasError ? " is-invalid" : ""} ${inputClassName}`.trim();
 
 const InputCheckbox: React.FC<IInputCheckbox> = ({
 	name,
-	label = "CheckBox",
+	// label = "CheckBox",
 	hasError = false,
 	errorMessage,
-	inputClassName = "",
+	// inputClassName = "",
 	innerRef,
 	watch,
 	setValue
 }) => {
-	const className = constructClassName(inputClassName, hasError);
 
 	const handleClick = () => {
 		setValue(name, !watch);
 	};
 
 	return (
-		<div className='hot-form-group'>
-			<div className='hot-custom-control hot-custom-checkbox hot-custom-control'>
+		<div>
+			<Checkbox
+				// checked={state.checkedB}
+				onClick={handleClick}
+				name={name}
+				ref={innerRef}
+				value="checkedB"
+				color="primary"
+				inputProps={{
+					'aria-label': 'secondary checkbox',
+				}}
+			/>
+
+			{/* <div className='hot-custom-control hot-custom-checkbox hot-custom-control'>
 				<input name={name} ref={innerRef} type='checkbox' className={className} />
 				<label onClick={handleClick} className='hot-custom-control__label' htmlFor={name}>
 					{label}
 				</label>
-				<InputMessage hasError={hasError} errorMessage={errorMessage} />
-			</div>
+			</div> */}
+			<InputMessage hasError={hasError} errorMessage={errorMessage} />
 		</div>
 	);
 };

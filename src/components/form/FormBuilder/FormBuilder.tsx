@@ -1,5 +1,5 @@
 import React from "react";
-import { InputText, InputFile, InputTextArea, InputSelect, InputCheckbox } from "..";
+import { InputText, InputFile, InputSelect, InputCheckbox } from "..";
 import { IFormBuilder, IForm } from "./interfaces";
 import useForm from "react-hook-form";
 
@@ -43,15 +43,15 @@ const FormBuilder: React.FC<IFormBuilder> = ({ formClassName = "row", form, id, 
 					/>
 				);
 			}
-			case "textarea": {
-				return (
-					<InputTextArea
-						innerRef={register(validations)}
-						hasError={i.formType.name in errors}
-						{...i.formType}
-					/>
-				);
-			}
+			// case "textarea": {
+			// 	return (
+			// 		<InputTextArea
+			// 			innerRef={register(validations)}
+			// 			hasError={i.formType.name in errors}
+			// 			{...i.formType}
+			// 		/>
+			// 	);
+			// }
 			case "select": {
 				register({ name: i.formType.name }, i.validations);
 				return (

@@ -2,13 +2,13 @@ import React, { useMemo, useEffect, useState } from "react";
 import { isEmpty } from "../../../../utils/object";
 import { endsWithAny } from "../../../../utils/string";
 import { ImageExtensions } from "../../../../utils/constants";
-import Avatar from "src/Components/Avatar/Avatar";
+// import Avatar from "src/Components/Avatar/Avatar";
 
 interface IInputFilePreview {
 	file?: (watch: any) => void;
 }
 
-const getPreviewFileStatus = file => {
+const getPreviewFileStatus = (file: any) => {
 	const isFile = typeof file !== "string";
 
 	if (!isEmpty(file)) {
@@ -50,8 +50,9 @@ const InputFilePreview: React.FC<IInputFilePreview> = ({ file }) => {
 	return hasPreview ? (
 		<img className='mb-2' alt='' src={preview} height={128} width={128}></img>
 	) : (
-		<Avatar className='hot-avatar--xl rounded mb-2' />
-	);
+			// <Avatar className='hot-avatar--xl rounded mb-2' />
+			<div> Avatar</div>
+		);
 };
 
 export default InputFilePreview;

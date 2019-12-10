@@ -1,6 +1,14 @@
 import React, { useRef } from "react";
-import { useInputChange } from "../../../CustomHooks/index";
+import { useInputChange } from "../../../customHooks";
 import { InputMessage } from "..";
+
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+
+
+import { useStyles } from './styles'
 
 export interface IInputSelect {
 	name: string;
@@ -22,47 +30,41 @@ export interface IInputSelect {
 const InputSelect: React.FC<IInputSelect> = ({
 	name,
 	label,
-	placeHolder = "",
+	// placeHolder = "",
 	hasError,
 	errorMessage,
-	disabled,
-	noResultText = "",
+	// disabled,
+	// noResultText = "",
 	options,
-	optionClassName,
-	inputClassName,
+	// optionClassName,
+	// inputClassName,
 	setValue
 }: IInputSelect) => {
-	const optionalProps = {
-		...(hasError ? { invalid: "" } : {}),
-		...(disabled ? { disabled: "" } : {}),
-		...(noResultText ? { "text-no-results": noResultText } : {})
-	};
+	const classes = useStyles()
 
 	const inputSelectRef = useRef();
 	useInputChange(inputSelectRef, setValue, name);
 
 	return (
-		<div className={`hot-form-group`}>
-			{label && (
-				<label htmlFor={name} className={`d-block`}>
-					{label}
-				</label>
-			)}
-			<hot-select
-				name={name}
-				ref={inputSelectRef}
-				class={`w-100 ${inputClassName}`}
-				placeholder={placeHolder}
-				{...optionalProps}
-			>
-				{options.map(option => {
-					return (
-						<hot-select-option key={option.value} value={option.value} class={optionClassName}>
-							{option.text}
-						</hot-select-option>
-					);
-				})}
-			</hot-select>
+		<div >
+			<FormControl variant="filled" className={classes.formControl}>
+				{label && (
+					<InputLabel id="demo-simple-select-filled-label">{label}</InputLabel>
+				)}
+
+				<Select
+					labelId="demo-simple-select-filled-label"
+					id="demo-simple-select-filled"
+					name={name}
+					ref={inputSelectRef}
+				>
+					{options.map(option => {
+						return (
+							<MenuItem key={option.value} value={option.value}>{option.text}</MenuItem>
+						);
+					})}
+				</Select>
+			</FormControl>
 
 			<InputMessage hasError={hasError} errorMessage={errorMessage} />
 		</div>

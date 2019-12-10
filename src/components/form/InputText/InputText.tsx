@@ -1,5 +1,6 @@
 import React from "react";
 import { InputMessage } from "..";
+import TextField from '@material-ui/core/TextField';
 
 export interface IInputText {
 	name: string;
@@ -19,38 +20,23 @@ type Size = "sm" | "lg" | "";
 
 type AutoComplete = "on" | "off";
 
-const constructClassName = (inputClassName: string, size: Size, hasError: boolean) =>
-	`hot-form-control${size ? `--${size}` : ""} ${
-		hasError ? "is-invalid" : ""
-	} ${inputClassName}`.trim();
-
 const InputText: React.FC<IInputText> = ({
 	name,
-	label = "",
-	placeHolder = "",
+	// label = "",
+	// placeHolder = "",
 	hasError = false,
 	errorMessage,
-	size = "",
-	autoComplete,
-	disabled = false,
-	inputClassName = "",
-	variation,
+	// size = "",
+	// autoComplete,
+	// disabled = false,
+	// inputClassName = "",
+	// variation,
 	innerRef
 }: IInputText) => {
-	const className = constructClassName(inputClassName, size, hasError);
 
 	return (
-		<div className='hot-form-group'>
-			<label htmlFor={name}>{label}</label>
-			<input
-				name={name}
-				ref={innerRef}
-				type={variation}
-				placeholder={placeHolder}
-				className={className}
-				autoComplete={autoComplete}
-				disabled={disabled}
-			/>
+		<div>
+			<TextField name={name} inputRef={innerRef} id="outlined-basic" label="Outlined" variant="outlined" />
 			<InputMessage hasError={hasError} errorMessage={errorMessage} />
 		</div>
 	);

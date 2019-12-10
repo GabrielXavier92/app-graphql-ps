@@ -55,6 +55,7 @@ const ForgotForm: React.FC = () => {
       errors.email!.type === "minLength") {
       return "Minimo 5 caracters"
     }
+    return ''
   }
 
   return (
