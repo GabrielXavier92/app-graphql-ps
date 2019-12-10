@@ -12,5 +12,9 @@ export const useStyles = makeStyles(theme => ({
   input: {
     padding: theme.spacing(1),
     textAlign: 'center',
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
   }
 }))

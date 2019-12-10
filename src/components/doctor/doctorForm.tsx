@@ -4,6 +4,11 @@ import useForm from 'react-hook-form'
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
 
 import { useHistory } from "react-router-dom"
 import { useMutation } from "@apollo/react-hooks"
@@ -19,7 +24,9 @@ const DoctorForm: React.FC = () => {
 
   const history = useHistory()
 
-  const { register, handleSubmit, errors } = useForm<DoctorInput>()
+  const { register, handleSubmit, errors, setValue, watch } = useForm<DoctorInput>()
+
+  watch();
 
   const [createDoctor, { loading }] = useMutation(CREATE_DOCTOR, {
     onCompleted: ({ doctor }) => {
@@ -28,18 +35,23 @@ const DoctorForm: React.FC = () => {
   })
 
   const handleCreateDoctor = (data: DoctorInput) => {
-    createDoctor({
-      variables: {
-        doctor: data
-      }
-    })
+    console.log(data)
+    // createDoctor({
+    //   variables: {
+    //     doctor: data
+    //   }
+    // })
   }
   //new Date().toISOString()
+
+  const setGender = (e: any) => {
+    setValue('gender', e.target.value)
+  }
 
   return (
     <Grid>
       <Paper className={classes.paper}>
-        <form className={classes.form}>
+        <form className={classes.form} onSubmit={handleSubmit(handleCreateDoctor)}>
           <Grid item xs={6} spacing={3}>
             <TextField
               className={classes.input}
@@ -85,19 +97,26 @@ const DoctorForm: React.FC = () => {
             error={"birth" in errors}
           // helperText={helperText()}
           />
-          <TextField
-            className={classes.input}
-            name="gender"
-            inputRef={register({ required: true, minLength: 5 })}
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="gender"
-            label="Sexo"
-            autoComplete="gender"
-            error={"gender" in errors}
-          // helperText={helperText()}
-          />
+
+          <FormControl variant="outlined" className={classes.formControl}>
+            <InputLabel
+              id="demo-simple-select-outlined-label">
+              Sexo
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="gender"
+              name="gender"
+              onChange={setGender}
+              inputRef={register({})}
+            >
+              <MenuItem value={'MASCULINO'}>Masculino</MenuItem>
+              <MenuItem value={'FEMININO'}>Feminino</MenuItem>
+            </Select>
+          </FormControl>
+          <Button variant="contained" type='submit' color="primary">
+            Confirm
+          </Button>
         </form>
       </Paper>
     </Grid>
