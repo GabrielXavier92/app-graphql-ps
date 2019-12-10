@@ -15,5 +15,6 @@ import InputTextArea from "./InputTextArea/InputTextArea";
 import InputSelect from "./InputSelect/InputSelect";
 import InputFile from "./InputFile/InputFile";
 import InputCheckbox from "./InputCheckbox/InputCheckbox";
+import FormBuilder from "./FormBuilder/FormBuilder";
 
-export { InputText, InputTextArea, InputMessage, InputSelect, InputFile, InputCheckbox };
+export { FormBuilder, InputText, InputTextArea, InputMessage, InputSelect, InputFile, InputCheckbox };
