@@ -1,44 +1,26 @@
 import React from "react";
-import { InputMessage } from "..";
-import TextField from '@material-ui/core/TextField';
 
-export interface IInputText {
-	name: string;
-	label?: string;
-	placeHolder?: string;
-	hasError?: boolean;
-	errorMessage?: string;
-	size?: Size;
-	autoComplete?: AutoComplete;
-	disabled?: boolean;
-	inputClassName?: string;
-	variation: "text" | "email" | "number" | "password";
-	innerRef?: (innerRef: any) => void;
-}
 
-type Size = "sm" | "lg" | "";
+import { FormControl } from '@material-ui/core';
+import { Grid } from "@material-ui/core";
+import { TextField } from '@material-ui/core';
 
-type AutoComplete = "on" | "off";
+import { TexFieldType } from "../FormBuilder/interfaces";
 
-const InputText: React.FC<IInputText> = ({
-	name,
-	// label = "",
-	// placeHolder = "",
-	hasError = false,
-	errorMessage,
-	// size = "",
-	// autoComplete,
-	// disabled = false,
-	// inputClassName = "",
-	// variation,
-	innerRef
-}: IInputText) => {
+import { useStyles } from '../styles'
+
+const InputText: React.FC<TexFieldType> = (props: TexFieldType) => {
+	const classes = useStyles()
 
 	return (
-		<div>
-			<TextField name={name} inputRef={innerRef} id="outlined-basic" label="Outlined" variant="outlined" />
-			<InputMessage hasError={hasError} errorMessage={errorMessage} />
-		</div>
+		<Grid item xs={props.grid}>
+			<FormControl className={classes.formControl} variant={props.variant} fullWidth>
+				<TextField
+					{...props}
+					helperText={props.error ? props.helperText : ''}
+				/>
+			</FormControl>
+		</Grid>
 	);
 };
 

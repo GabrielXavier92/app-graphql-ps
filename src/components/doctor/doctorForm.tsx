@@ -45,29 +45,36 @@ const DoctorForm: React.FC = () => {
   const form: Array<IForm> = [
     {
       validations: { required: true },
-      divClassName: "col-md-6 col-xs-6",
       formType: {
         type: "input",
-        name: "fullName",
-        variation: "text"
+        name: "input",
+        label: 'Email',
+        variant: "outlined",
+        helperText: "Campo Obrigatorio",
+        grid: 6
       }
     },
+    // {
+    //   validations: {},
+    //   formType: {
+    //     name: "sexo",
+    //     type: "select",
+    //     options: [
+    //       { value: "MASCULINO", text: "Masculino" },
+    //       { value: "FEMININO", text: "Feminino" }
+    //     ],
+    //     label: "Sexo",
+    //     errorMessage: "form.feedback.website",
+    //     placeHolder: "form.placeholder.website"
+    //   }
+    // },
     {
-      validations: { required: true },
+      validations: {},
       formType: {
         type: "checkbox",
-        name: "checkbox",
-      }
-    },
-    {
-      validations: { required: true },
-      formType: {
-        name: "country",
-        type: "select",
-        options: [{ value: "aaaaaaa", text: "optiomn" }],
-        label: "form.label.website",
-        errorMessage: "form.feedback.website",
-        placeHolder: "form.placeholder.website"
+        name: "check",
+        label: "CheckBox",
+        grid: 6
       }
     }
   ];

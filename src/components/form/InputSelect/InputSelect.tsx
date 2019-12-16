@@ -1,5 +1,4 @@
-import React, { useRef } from "react";
-import { useInputChange } from "../../../customHooks";
+import React, { useRef, useState, useEffect } from "react";
 import { InputMessage } from "..";
 
 import FormControl from '@material-ui/core/FormControl';
@@ -7,8 +6,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
-
-import { useStyles } from './styles'
+import { useStyles } from '../styles'
 
 export interface IInputSelect {
 	name: string;
@@ -25,49 +23,52 @@ export interface IInputSelect {
 	optionClassName?: string;
 	inputClassName?: string;
 	setValue?: any;
+	watch?: (watch: any) => void;
 }
 
 const InputSelect: React.FC<IInputSelect> = ({
 	name,
-	label,
-	// placeHolder = "",
+	label = "",
 	hasError,
 	errorMessage,
-	// disabled,
-	// noResultText = "",
 	options,
-	// optionClassName,
-	// inputClassName,
 	setValue
 }: IInputSelect) => {
 	const classes = useStyles()
 
-	const inputSelectRef = useRef();
-	useInputChange(inputSelectRef, setValue, name);
+	const inputLabel = useRef<HTMLLabelElement>(null);
+	const [labelWidth, setLabelWidth] = useState(0);
+	const [select, setSelect] = useState('')
+
+	useEffect(() => {
+		setLabelWidth(inputLabel.current!.offsetWidth);
+	}, []);
+
+	const handleChange = (e) => {
+		setValue(name, e.target.value)
+		setSelect(e.target.value)
+	}
 
 	return (
-		<div >
-			<FormControl variant="filled" className={classes.formControl}>
-				{label && (
-					<InputLabel id="demo-simple-select-filled-label">{label}</InputLabel>
-				)}
-
-				<Select
-					labelId="demo-simple-select-filled-label"
-					id="demo-simple-select-filled"
-					name={name}
-					ref={inputSelectRef}
-				>
-					{options.map(option => {
-						return (
-							<MenuItem key={option.value} value={option.value}>{option.text}</MenuItem>
-						);
-					})}
-				</Select>
-			</FormControl>
-
+		<FormControl variant="outlined" className={classes.formControl}>
+			<InputLabel id={name} ref={inputLabel}>{label}</InputLabel>
+			<Select
+				labelId={name}
+				id="demo-simple-select-filled"
+				name={name}
+				value={select}
+				onChange={handleChange}
+				labelWidth={labelWidth}
+			>
+				{options.map(option => {
+					return (
+						<MenuItem key={option.value} value={option.value}>{option.text}</MenuItem>
+					);
+				})}
+			</Select>
 			<InputMessage hasError={hasError} errorMessage={errorMessage} />
-		</div>
+		</FormControl>
+
 	);
 };
 

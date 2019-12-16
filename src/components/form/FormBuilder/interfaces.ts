@@ -1,7 +1,9 @@
-import { IInputCheckbox } from "./../InputCheckbox/InputCheckbox";
-import { IInputSelect } from "./../InputSelect/InputSelect";
-import { IInputText } from "../InputText/InputText";
-import { IInputFile } from "../InputFile/InputFile";
+// import { IInputCheckbox } from "./../InputCheckbox/InputCheckbox";
+// import { IInputSelect } from "./../InputSelect/InputSelect";
+// import { IInputFile } from "../InputFile/InputFile";
+
+import { TextFieldProps } from '@material-ui/core/TextField'
+import { CheckboxProps } from "@material-ui/core/Checkbox"
 
 export interface IFormBuilder {
 	formClassName?: string;
@@ -13,25 +15,21 @@ export interface IFormBuilder {
 export interface IForm {
 	validations?: IValidations;
 	divClassName?: string;
-	formType: Input | File | Select | Checkbox;
+	formType: TexFieldType | CheckBoxType;
 }
 
-interface Input extends IInputText {
-	type: "input";
+type InputProps = {
+	label: string
+	grid?: boolean | 1 | "auto" | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | undefined
 }
 
-interface File extends IInputFile {
-	type: "file";
+type InputFuncions = {
+	setValue?: any;
+	watch?: (watch: any) => void;
 }
 
-
-interface Select extends IInputSelect {
-	type: "select";
-}
-
-interface Checkbox extends IInputCheckbox {
-	type: "checkbox";
-}
+export type TexFieldType = TextFieldProps & InputProps
+export type CheckBoxType = CheckboxProps & InputProps & InputFuncions & any
 
 interface IValidations {
 	required?: string | boolean;

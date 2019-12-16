@@ -65,12 +65,12 @@ const LoginForm: React.FC = () => {
     <form className={classes.form} onSubmit={handleSubmit(handleLogin)}>
       {loading && <Loading />}
       <TextField
+        id="email"
         name="email"
         inputRef={register({ required: true, minLength: 5 })}
         variant="outlined"
         margin="normal"
         fullWidth
-        id="email"
         label="Email"
         autoComplete="email"
         error={"email" in errors}

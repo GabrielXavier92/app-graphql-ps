@@ -1,48 +1,60 @@
 import React from "react";
-import { InputText, InputFile, InputSelect, InputCheckbox } from "..";
+import {
+	InputText, InputCheckbox
+	// InputFile, InputSelect
+} from "..";
+
 import { IFormBuilder, IForm } from "./interfaces";
+
 import useForm from "react-hook-form";
 
-const FormBuilder: React.FC<IFormBuilder> = ({ formClassName = "row", form, id, onSubmit }) => {
+import { useStyles } from '../styles'
+
+const FormBuilder: React.FC<IFormBuilder> = ({ form, id, onSubmit }) => {
+	const classes = useStyles()
+
 	const { register, handleSubmit, errors, watch, setValue } = useForm();
 	watch();
 
-	const selectInput = (i: IForm) => {
-		const { validations = {} } = i;
+	const selectInput = (form: IForm) => {
+		const { validations = {} } = form;
 
-		switch (i.formType.type) {
-			case "file": {
-				return (
-					<InputFile
-						innerRef={register(validations)}
-						watch={watch(i.formType.name)}
-						hasError={i.formType.name in errors}
-						{...i.formType}
-					/>
-				);
-			}
+		switch (form.formType.type) {
 			case "input": {
 				return (
-					<div>
-						<InputText
-							innerRef={register(validations)}
-							hasError={i.formType.name in errors}
-							{...i.formType}
-						/>
-					</div>
+					<InputText
+						inputRef={register(validations)}
+						error={form.formType!.name! in errors}
+						{...form.formType}
+					/>
 				);
 			}
 			case "checkbox": {
 				return (
 					<InputCheckbox
-						innerRef={register(validations)}
-						watch={watch(i.formType.name)}
+						inputRef={register(validations)}
 						setValue={setValue}
-						hasError={i.formType.name in errors}
-						{...i.formType}
+						{...form.formType}
 					/>
 				);
 			}
+			// case "select": {
+			// 	register({ name: i.formType.name }, i.validations);
+			// 	return (
+			// 		<InputSelect hasError={i.formType.name in errors} setValue={setValue} watch={watch(i.formType.name)} {...i.formType} />
+			// 	);
+			// }
+			// case "file": {
+			// 	return (
+			// 		<InputFile
+			// 			innerRef={register(validations)}
+			// 			watch={watch(i.formType.name)}
+			// 			hasError={i.formType.name in errors}
+			// 			{...i.formType}
+			// 		/>
+			// 	);
+			// }
+
 			// case "textarea": {
 			// 	return (
 			// 		<InputTextArea
@@ -52,12 +64,7 @@ const FormBuilder: React.FC<IFormBuilder> = ({ formClassName = "row", form, id, 
 			// 		/>
 			// 	);
 			// }
-			case "select": {
-				register({ name: i.formType.name }, i.validations);
-				return (
-					<InputSelect hasError={i.formType.name in errors} setValue={setValue} {...i.formType} />
-				);
-			}
+
 			default: {
 				throw new Error("Invalid type");
 			}
@@ -66,17 +73,10 @@ const FormBuilder: React.FC<IFormBuilder> = ({ formClassName = "row", form, id, 
 
 	return (
 		<>
-			<form id={id} onSubmit={handleSubmit(onSubmit)}>
-				<div className={formClassName}>
-					{form.map((i: IForm, index) => {
-						const { divClassName = "col-md-6 col-xs-12" } = i;
-						return (
-							<div key={index} className={divClassName}>
-								{selectInput(i)}
-							</div>
-						);
-					})}
-				</div>
+			<form id={id} className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+				{form.map((item: IForm) =>
+					(selectInput(item))
+				)}
 			</form>
 		</>
 	);
