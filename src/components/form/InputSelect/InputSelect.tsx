@@ -1,74 +1,40 @@
-import React, { useRef, useState, useEffect } from "react";
-import { InputMessage } from "..";
+import React from "react";
 
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
 
-import { useStyles } from '../styles'
+import { SelectFieldType } from "../FormBuilder/interfaces";
 
-export interface IInputSelect {
-	name: string;
-	label?: string;
-	placeHolder?: string;
-	hasError?: boolean;
-	errorMessage?: string;
-	disabled?: boolean;
-	noResultText?: string;
-	options: Array<{
-		value: string;
-		text: string;
-	}>;
-	optionClassName?: string;
-	inputClassName?: string;
-	setValue?: any;
-	watch?: (watch: any) => void;
-}
+import { useStyles } from "../styles";
 
-const InputSelect: React.FC<IInputSelect> = ({
-	name,
-	label = "",
-	hasError,
-	errorMessage,
-	options,
-	setValue
-}: IInputSelect) => {
-	const classes = useStyles()
+const InputSelect: React.FC<SelectFieldType> = (props: SelectFieldType) => {
+	const classes = useStyles();
 
-	const inputLabel = useRef<HTMLLabelElement>(null);
-	const [labelWidth, setLabelWidth] = useState(0);
-	const [select, setSelect] = useState('')
+	const handleChange = e => {
+		props.setValue(props.name, e.target.value);
+	};
 
-	useEffect(() => {
-		setLabelWidth(inputLabel.current!.offsetWidth);
-	}, []);
-
-	const handleChange = (e) => {
-		setValue(name, e.target.value)
-		setSelect(e.target.value)
-	}
+	const { xs, sm } = props;
 
 	return (
-		<FormControl variant="outlined" className={classes.formControl}>
-			<InputLabel id={name} ref={inputLabel}>{label}</InputLabel>
-			<Select
-				labelId={name}
-				id="demo-simple-select-filled"
-				name={name}
-				value={select}
+		<Grid item xs={xs} sm={sm} className={classes.input}>
+			<TextField
+				select
+				{...props}
+				fullWidth
+				variant='outlined'
+				margin='dense'
+				helperText={props.error ? props.helperText : " "}
 				onChange={handleChange}
-				labelWidth={labelWidth}
 			>
-				{options.map(option => {
-					return (
-						<MenuItem key={option.value} value={option.value}>{option.text}</MenuItem>
-					);
-				})}
-			</Select>
-			<InputMessage hasError={hasError} errorMessage={errorMessage} />
-		</FormControl>
-
+				{props.options!.map(option => (
+					<MenuItem key={option.value} value={option.value}>
+						{option.label}
+					</MenuItem>
+				))}
+			</TextField>
+		</Grid>
 	);
 };
 

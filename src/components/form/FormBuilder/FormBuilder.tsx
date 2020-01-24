@@ -1,6 +1,12 @@
 import React from "react";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+
 import {
-	InputText, InputCheckbox
+	InputText,
+	InputSelect
+	// InputCheckbox,
 	// InputFile, InputSelect
 } from "..";
 
@@ -8,10 +14,10 @@ import { IFormBuilder, IForm } from "./interfaces";
 
 import useForm from "react-hook-form";
 
-import { useStyles } from '../styles'
+import { useStyles } from "../styles";
 
-const FormBuilder: React.FC<IFormBuilder> = ({ form, id, onSubmit }) => {
-	const classes = useStyles()
+const FormBuilder: React.FC<IFormBuilder> = ({ form, id, onSubmit, title, children }) => {
+	const classes = useStyles();
 
 	const { register, handleSubmit, errors, watch, setValue } = useForm();
 	watch();
@@ -19,7 +25,7 @@ const FormBuilder: React.FC<IFormBuilder> = ({ form, id, onSubmit }) => {
 	const selectInput = (form: IForm) => {
 		const { validations = {} } = form;
 
-		switch (form.formType.type) {
+		switch (form.type) {
 			case "input": {
 				return (
 					<InputText
@@ -29,21 +35,23 @@ const FormBuilder: React.FC<IFormBuilder> = ({ form, id, onSubmit }) => {
 					/>
 				);
 			}
-			case "checkbox": {
+			case "select": {
+				register({ name: form.formType.name }, form.validations);
 				return (
-					<InputCheckbox
+					<InputSelect
 						inputRef={register(validations)}
+						error={form.formType.name in errors}
 						setValue={setValue}
 						{...form.formType}
 					/>
 				);
 			}
-			// case "select": {
-			// 	register({ name: i.formType.name }, i.validations);
+			// case "checkbox": {
 			// 	return (
-			// 		<InputSelect hasError={i.formType.name in errors} setValue={setValue} watch={watch(i.formType.name)} {...i.formType} />
+			// 		<InputCheckbox inputRef={register(validations)} setValue={setValue} {...form.formType} />
 			// 	);
 			// }
+
 			// case "file": {
 			// 	return (
 			// 		<InputFile
@@ -73,10 +81,18 @@ const FormBuilder: React.FC<IFormBuilder> = ({ form, id, onSubmit }) => {
 
 	return (
 		<>
-			<form id={id} className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-				{form.map((item: IForm) =>
-					(selectInput(item))
-				)}
+			<form id={id} onSubmit={handleSubmit(onSubmit)}>
+				<Paper className={classes.paper}>
+					<Typography variant='h5' gutterBottom>
+						{title}
+					</Typography>
+					<Grid container>
+						{form.map((item: IForm) => (
+							<React.Fragment key={item.formType.id}>{selectInput(item)}</React.Fragment>
+						))}
+					</Grid>
+					{children}
+				</Paper>
 			</form>
 		</>
 	);

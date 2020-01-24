@@ -15,15 +15,9 @@ export const FETCH_DOCTORS = gql`
 `;
 
 export const CREATE_DOCTOR = gql`
-	mutation CreateDoctor($doctor: DoctorInput) {
-		login(doctor: $doctor) {
+	mutation CreateDoctor($name: String!) {
+		createDoctor(doctor: { name: $name }) {
 			id
-			name
-			gender
-			birth
-			cro
-			services
-			specialties
 		}
 	}
 `;

@@ -4,13 +4,13 @@ import { useHistory } from "react-router-dom";
 
 import Grid from "@material-ui/core/Grid";
 
-import DataTable from '../dataTable';
+import DataTable from "../dataTable";
 import { Typography } from "@material-ui/core";
 
-import { FETCH_DOCTORS } from './graphql'
+import { FETCH_DOCTORS } from "./graphql";
 
 const DoctorList: React.FC = () => {
-	const history = useHistory()
+	const history = useHistory();
 
 	const { loading, data } = useQuery(FETCH_DOCTORS);
 
@@ -20,16 +20,17 @@ const DoctorList: React.FC = () => {
 	// }
 
 	const changePage = () => {
-		history.replace('/dashboard/doctor-form')
-	}
+		history.replace("/dashboard/doctor-form");
+	};
 
 	const onRowClick = (data: any) => {
-		console.log(data)
-	}
+		console.log(data);
+	};
 
 	const columns = [
 		{
-			name: "id", options: {
+			name: "id",
+			options: {
 				display: false,
 				viewColumns: false,
 				filter: false
@@ -38,13 +39,14 @@ const DoctorList: React.FC = () => {
 		"Nome",
 		"CRO",
 		{
-			name: "Status", options: {
+			name: "Status",
+			options: {
 				customBodyRender: (value: any) => (
 					<>
-						<Typography variant="subtitle2">{value && 'Ativo'}</Typography>
-						<Typography variant="subtitle2">{!value && 'Inativo'}</Typography>
+						<Typography variant='subtitle2'>{value && "Ativo"}</Typography>
+						<Typography variant='subtitle2'>{!value && "Inativo"}</Typography>
 					</>
-				),
+				)
 			}
 		},
 		"Sexo"
@@ -67,4 +69,4 @@ const DoctorList: React.FC = () => {
 	);
 };
 
-export default DoctorList
+export default DoctorList;

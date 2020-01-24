@@ -1,94 +1,57 @@
-import React from 'react';
+import React from "react";
 
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Button from '@material-ui/core/Button';
-import { FormBuilder } from '../form';
+import Button from "@material-ui/core/Button";
 
-import { IForm } from "../form/FormBuilder/interfaces";
+import { FormBuilder } from "../form";
 
+import { useHistory } from "react-router-dom";
+import { useMutation } from "@apollo/react-hooks";
 
-// import { useHistory } from "react-router-dom"
-// import { useMutation } from "@apollo/react-hooks"
+import { CREATE_DOCTOR } from "./graphql";
 
-import { useStyles } from './styles'
-
-// import { CREATE_DOCTOR } from './graphql'
-
-// import { DoctorInput } from '../../generated/graphql';
+import { form } from "./doctorFormInputs";
 
 const DoctorForm: React.FC = () => {
-  const classes = useStyles()
+	const history = useHistory();
+	const [createDoctor, { data }] = useMutation(CREATE_DOCTOR, {
+		onCompleted: ({ doctor }) => {
+			console.log(data);
+			console.log(doctor);
+			history.replace("/dashboard/doctor-list");
+		}
+	});
+	//new Date().toISOString()
 
-  // const history = useHistory()
+	const onsubmit = data => {
+		console.log(data);
+		data.services = [];
+		data.specialties = [];
+		console.log(data);
 
-  // const [createDoctor, { loading }] = useMutation(CREATE_DOCTOR, {
-  //   onCompleted: ({ doctor }) => {
-  //     console.log(doctor)
-  //   }
-  // })
+		createDoctor({
+			variables: {
+				name: data.name
+			}
+		});
+	};
 
-  // const handleCreateDoctor = (data: DoctorInput) => {
-  // console.log(data)
-  // createDoctor({
-  //   variables: {
-  //     doctor: data
-  //   }
-  // })
-  // }
-  //new Date().toISOString()
+	const cancelForm = () => {
+		history.replace("/dashboard/doctor-list");
+	};
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
+	return (
+		<FormBuilder id={"abc"} onSubmit={onsubmit} form={form} title='Cadastrar novo Profissional'>
+			<Grid container direction='row' justify='flex-end' alignItems='baseline'>
+				<Button type='submit' variant='contained' color='primary'>
+					Cadastrar
+				</Button>
+				<Button onClick={cancelForm} variant='contained' color='secondary'>
+					Cancelar
+				</Button>
+			</Grid>
+		</FormBuilder>
+	);
+};
 
-  const form: Array<IForm> = [
-    {
-      validations: { required: true },
-      formType: {
-        type: "input",
-        name: "input",
-        label: 'Email',
-        variant: "outlined",
-        helperText: "Campo Obrigatorio",
-        grid: 6
-      }
-    },
-    // {
-    //   validations: {},
-    //   formType: {
-    //     name: "sexo",
-    //     type: "select",
-    //     options: [
-    //       { value: "MASCULINO", text: "Masculino" },
-    //       { value: "FEMININO", text: "Feminino" }
-    //     ],
-    //     label: "Sexo",
-    //     errorMessage: "form.feedback.website",
-    //     placeHolder: "form.placeholder.website"
-    //   }
-    // },
-    {
-      validations: {},
-      formType: {
-        type: "checkbox",
-        name: "check",
-        label: "CheckBox",
-        grid: 6
-      }
-    }
-  ];
-
-  return (
-    <Grid>
-      <Paper className={classes.paper}>
-        <FormBuilder id='form-builder' form={form} onSubmit={onSubmit}></FormBuilder>
-        <Button form='form-builder' variant="contained" type='submit' color="primary">
-          Confirm
-          </Button>
-      </Paper>
-    </Grid>
-  )
-}
-
-export default DoctorForm
+export default DoctorForm;
