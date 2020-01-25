@@ -21,7 +21,13 @@ const Routes = () => {
 };
 
 export const routes = [
-	{ key: 1, name: "Conta", path: "/dashboard/doctor-list", component: DoctorList, menu: true },
+	{
+		key: 1,
+		name: "Profissionais",
+		path: "/dashboard/doctor-list",
+		component: DoctorList,
+		menu: true
+	},
 	{
 		key: 2,
 		name: "Novo Profissional",
@@ -29,7 +35,14 @@ export const routes = [
 		component: DoctorForm,
 		menu: false
 	},
-	{ key: 3, name: "Teste", path: "/dashboard/teste", component: teste, menu: true }
+	{
+		key: 3,
+		name: "Editar Profissional",
+		path: "/dashboard/doctor-form/:id",
+		component: DoctorForm,
+		menu: false
+	},
+	{ key: 4, name: "Teste", path: "/dashboard/teste", component: teste, menu: true }
 ];
 
 export const DashboardRoutes = () => {

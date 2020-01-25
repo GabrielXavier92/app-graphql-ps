@@ -3,12 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 
-import {
-	InputText,
-	InputSelect
-	// InputCheckbox,
-	// InputFile, InputSelect
-} from "..";
+import { InputText, InputSelect } from "..";
 
 import { IFormBuilder, IForm } from "./interfaces";
 

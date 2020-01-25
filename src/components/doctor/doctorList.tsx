@@ -14,16 +14,15 @@ const DoctorList: React.FC = () => {
 
 	const { loading, data } = useQuery(FETCH_DOCTORS);
 
-	// const logout = async () => {
-	// 	await localStorage.clear()
-	// 	history.replace('/login')
-	// }
-
-	const changePage = () => {
+	const onAdd = () => {
 		history.replace("/dashboard/doctor-form");
 	};
 
-	const onRowClick = (data: any) => {
+	const onEdit = data => {
+		history.replace(`/dashboard/doctor-form/${data[0]}`);
+	};
+
+	const onDelete = data => {
 		console.log(data);
 	};
 
@@ -49,21 +48,20 @@ const DoctorList: React.FC = () => {
 				)
 			}
 		},
-		"Sexo"
+		"Sexo",
+		"Ações"
 	];
 
 	return (
 		<Grid>
-			{/* <button onClick={() => logout()}>Logout</button>
-			<button onClick={() => refetch()}>Refetch</button>
-			<button onClick={() => changePage()}>TESTE</button> */}
 			<DataTable
 				title={"Profissionais"}
 				columns={columns}
 				items={data ? data.fetchDoctors : []}
 				loading={loading}
-				onRowClick={onRowClick}
-				onAdd={changePage}
+				onAdd={onAdd}
+				onEdit={onEdit}
+				onDelete={onDelete}
 			/>
 		</Grid>
 	);
