@@ -9,7 +9,7 @@ import SnackbarUtils from "../utils/snack";
 import history from "../utils/history";
 
 const httpLink = createHttpLink({
-	uri: "http://localhost:4000/"
+	uri: "https://agendamento-server.herokuapp.com/"
 });
 
 const authLink = setContext((_, { headers }) => {
