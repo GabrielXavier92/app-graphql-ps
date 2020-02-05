@@ -1,10 +1,20 @@
 import { gql } from "apollo-boost";
 
-// import { DoctorInput } from '../../generated/graphql'
-
 export const FETCH_DOCTORS = gql`
 	{
 		fetchDoctors {
+			id
+			name
+			cro
+			status
+			gender
+		}
+	}
+`;
+
+export const FETCH_DOCTOR = gql`
+	query fetchDoctor($id: ID!) {
+		fetchDoctor(id: $id) {
 			id
 			name
 			cro

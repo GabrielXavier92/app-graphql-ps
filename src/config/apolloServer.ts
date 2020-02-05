@@ -42,7 +42,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 export const client = new ApolloClient({
 	link: errorLink.concat(authLink.concat(httpLink)),
-	cache: new InMemoryCache(),
+	cache: new InMemoryCache({
+		addTypename: false
+	}),
 	defaultOptions: {
 		watchQuery: {
 			fetchPolicy: "cache-and-network"

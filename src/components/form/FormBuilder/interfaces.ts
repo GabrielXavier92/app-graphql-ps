@@ -1,5 +1,6 @@
 export interface IFormBuilder {
 	form: Array<IForm>;
+	data?: any;
 	id?: string;
 	title?: string;
 	onSubmit(data: any): void;
@@ -8,12 +9,8 @@ export interface IFormBuilder {
 export interface IForm {
 	validations?: IValidations;
 	type: string;
-	formType: TexFieldType | SelectFieldType;
+	formType: InputProps;
 }
-
-export type TexFieldType = InputProps & TextProps;
-export type SelectFieldType = SelectProps & InputProps;
-export type CheckBoxType = InputProps;
 
 type InputProps = {
 	id: string;
@@ -26,13 +23,7 @@ type InputProps = {
 	inputRef?: any;
 	error?: boolean;
 	watch?: (watch: any) => void;
-};
-
-type TextProps = {
 	type?: string;
-};
-
-type SelectProps = {
 	options?: Array<{
 		value: string;
 		label: string;

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import useForm from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/react-hooks";

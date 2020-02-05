@@ -31,7 +31,11 @@ const CustomRow: React.FC<ICustomRow> = ({ data, onRowClick, onEdit, onDelete }:
 	return (
 		<TableRow onClick={handleClick}>
 			{data!.map((item, index) => {
-				return index > 0 ? <TableCell align='left'>{item}</TableCell> : null;
+				return index > 0 ? (
+					<TableCell key={index} align='left'>
+						{item}
+					</TableCell>
+				) : null;
 			})}
 			<TableCell align='left'>
 				<Button

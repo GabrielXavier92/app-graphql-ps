@@ -1,43 +1,78 @@
-import React from "react";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
+import React, { useEffect } from "react";
 
-import { InputText, InputSelect } from "..";
+import { Grid, TextField, MenuItem, Paper, Typography } from "@material-ui/core";
 
 import { IFormBuilder, IForm } from "./interfaces";
 
-import useForm from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
 import { useStyles } from "../styles";
 
-const FormBuilder: React.FC<IFormBuilder> = ({ form, id, onSubmit, title, children }) => {
+const FormBuilder: React.FC<IFormBuilder> = ({ form, data, id, onSubmit, title, children }) => {
 	const classes = useStyles();
 
-	const { register, handleSubmit, errors, watch, setValue } = useForm();
-	watch();
+	const { handleSubmit, errors, control, reset, register } = useForm();
+
+	const handleSetValues = () => {
+		register({ id: data!.id });
+		reset(data);
+	};
+
+	useEffect(() => {
+		if (data!.id) {
+			handleSetValues();
+		}
+	}, [data]);
 
 	const selectInput = (form: IForm) => {
 		const { validations = {} } = form;
+		const error = form.formType!.name! in errors;
+		const helperText = error ? form.formType.helperText : " ";
 
 		switch (form.type) {
 			case "input": {
 				return (
-					<InputText
-						inputRef={register(validations)}
-						error={form.formType!.name! in errors}
-						{...form.formType}
-					/>
+					<Controller
+						as={
+							<TextField
+								{...form.formType}
+								error={error}
+								fullWidth
+								variant='outlined'
+								margin='dense'
+								helperText={helperText}
+							/>
+						}
+						name={form.formType.name}
+						control={control}
+						rules={validations}
+						defaultValue=''
+					></Controller>
 				);
 			}
 			case "select": {
-				register({ name: form.formType.name }, form.validations);
 				return (
-					<InputSelect
-						inputRef={register(validations)}
-						error={form.formType.name in errors}
-						setValue={setValue}
-						{...form.formType}
+					<Controller
+						as={
+							<TextField
+								{...form.formType}
+								error={error}
+								select
+								fullWidth
+								variant='outlined'
+								margin='dense'
+								helperText={helperText}
+							>
+								{form.formType.options!.map(option => (
+									<MenuItem key={option.value} value={option.value}>
+										{option.label}
+									</MenuItem>
+								))}
+							</TextField>
+						}
+						name={form.formType.name}
+						control={control}
+						defaultValue=''
 					/>
 				);
 			}
@@ -83,7 +118,15 @@ const FormBuilder: React.FC<IFormBuilder> = ({ form, id, onSubmit, title, childr
 					</Typography>
 					<Grid container>
 						{form.map((item: IForm) => (
-							<React.Fragment key={item.formType.id}>{selectInput(item)}</React.Fragment>
+							<Grid
+								item
+								key={item.formType.id}
+								className={classes.input}
+								xs={item.formType.xs}
+								sm={item.formType.sm}
+							>
+								{selectInput(item)}
+							</Grid>
 						))}
 					</Grid>
 					{children}
